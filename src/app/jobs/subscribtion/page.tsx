@@ -28,7 +28,7 @@ const AVAILABLE_PLANS = [
     desc: 'For basic features to kickstart your job search efficiency',
     badge: 'Save 38%',
     price: { monthly: '$9.99', quarterly: '$6.99' },
-    original: { monthly: '$10.00/monthly', quarterly: '$9.99/monthly' },
+    original: { monthly: '', quarterly: '$9.99/monthly' },
     billing: { monthly: '', quarterly: 'BILLED QUARTERLY, $20.99' },
     cta: 'dark' as const,
     features: ['50 Auto Apply per month', '10 Resume Credits'],
@@ -39,7 +39,7 @@ const AVAILABLE_PLANS = [
     popular: true,
     current: true,
     price: { monthly: '$25.99', quarterly: '$15.99' },
-    original: { monthly: '$25.99/monthly', quarterly: '$25.99/monthly' },
+    original: { monthly: '', quarterly: '$25.99/monthly' },
     billing: { monthly: '', quarterly: 'BILLED QUARTERLY, $47.99' },
     cta: 'primary' as const,
     features: ['150 Auto Apply per month', '50 Resume Credits'],
@@ -49,7 +49,7 @@ const AVAILABLE_PLANS = [
     desc: 'Unlock advanced AI capacities, maximize your job hunting success',
     badge: 'Save 50%',
     price: { monthly: '$59.99', quarterly: '$29.99' },
-    original: { monthly: '$59.99/monthly', quarterly: '$59.99/monthly' },
+    original: { monthly: '', quarterly: '$59.99/monthly' },
     billing: { monthly: '', quarterly: 'BILLED QUARTERLY, $89.99' },
     cta: 'dark' as const,
     features: ['300 Auto Apply per month', '150 Resume Credits'],
@@ -80,6 +80,7 @@ const AVATAR_TONES = [
 export default function SubscribtionPage() {
   const [billing, setBilling] = useState<Billing>('monthly')
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(true)
+  const amountPeriodLabel = billing === 'monthly' ? '/Month' : '/quarter'
   const currentPlan = useMemo(() => AVAILABLE_PLANS.find(item => item.current), [])
   const activePlanName = currentPlan?.name ?? 'Free'
   const activeTierLabel = currentPlan ? ` (${CURRENT_MEMBER.tier})` : ''
@@ -158,7 +159,13 @@ export default function SubscribtionPage() {
             <div className="jb-user-menu" id="sub-profile-menu">
               <a href="#" className="jb-user-menu-item"><ChartNoAxesColumn size={18} strokeWidth={1.9} /><span>Usage</span></a>
               <a href="#" className="jb-user-menu-item"><Settings size={18} strokeWidth={1.9} /><span>Setting</span></a>
-              <a href="/jobs/subscribtion" className="jb-user-menu-item sub-user-menu-item--active"><CreditCard size={18} strokeWidth={1.9} /><span>subscribtion</span></a>
+              <a href="/jobs/subscribtion" className="jb-user-menu-item sub-user-menu-item--active">
+                <CreditCard size={18} strokeWidth={1.9} />
+                <span className="sub-menu-label-row">
+                  <span>subscribtion</span>
+                  <span className="sub-menu-trial-pill">3-days free trial</span>
+                </span>
+              </a>
               <a href="/" className="jb-user-menu-item"><LogOut size={18} strokeWidth={1.9} /><span>Log out</span></a>
             </div>
           ) : null}
@@ -179,7 +186,12 @@ export default function SubscribtionPage() {
           </div>
 
           <div className="sub-plans-head">
-            <h3>Available plans</h3>
+            <div>
+              <h3>Available plans</h3>
+              <p className="sub-trial-note">
+                Start with <span className="sub-trial-pill">3-days free trial</span>
+              </p>
+            </div>
             <div className="pricing-toggle">
               <button
                 className={`toggle-btn${billing === 'monthly' ? ' toggle-btn--active' : ''}`}
@@ -209,9 +221,14 @@ export default function SubscribtionPage() {
                 <p className="plan-desc">{plan.desc}</p>
 
                 <div className="plan-price">
-                  <span className="plan-amount">{plan.price[billing]}</span>
+                  <span className="plan-amount">
+                    {plan.price[billing]}
+                    <span className="plan-amount-period">{amountPeriodLabel}</span>
+                  </span>
                   <div className="plan-price-meta">
-                    <span className="plan-original">{plan.original[billing]}</span>
+                    <span className={`plan-original${plan.original[billing] ? '' : ' is-empty'}`}>
+                      {plan.original[billing] || '\u00A0'}
+                    </span>
                     <span className={`plan-billing${plan.billing[billing] ? '' : ' is-empty'}`}>
                       {plan.billing[billing] || '\u00A0'}
                     </span>

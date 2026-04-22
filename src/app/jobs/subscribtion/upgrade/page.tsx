@@ -4,23 +4,25 @@ import { useMemo, useState, type CSSProperties } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { ArrowRight, Info, LogOut, Sparkles } from 'lucide-react'
 
-type Cycle = 'yearly' | 'quarterly' | 'monthly'
+type Cycle = 'quarterly' | 'monthly'
 
 const FIG_LOGO_ICON = '/img/nav/logo_icon.png'
 const FIG_LOGO_WORDMARK = '/img/nav/logo_wordmark.png'
 
 // 订阅周期配置：perMonth 为折算后的月单价，total 为一次性支付总额
 const CYCLE_OPTIONS: Record<Cycle, { label: string; perMonth: number; total: number; save?: string; popular?: boolean }> = {
-  yearly: { label: 'Yearly', perMonth: 12, total: 144, save: 'Save 60%', popular: true },
-  quarterly: { label: 'Quarterly', perMonth: 20, total: 60, save: 'Save 33%' },
+  quarterly: { label: 'Quarterly', perMonth: 20, total: 60, save: 'Save 33%', popular: true },
   monthly: { label: 'Monthly', perMonth: 30, total: 30 },
 }
 
 // 人类可读的 billing 文案（单数/周期描述）
 const CYCLE_BILLED_LABEL: Record<Cycle, string> = {
-  yearly: 'Billed yearly',
   quarterly: 'Billed quarterly',
   monthly: 'Billed monthly',
+}
+const CYCLE_PRICE_PERIOD_LABEL: Record<Cycle, string> = {
+  quarterly: '/quarter',
+  monthly: '/Month',
 }
 
 const USER_EMAIL = 'shuang22.mei@gmail.com'
@@ -38,10 +40,20 @@ const AVATAR_TONES = [
 export default function UpgradePage() {
   const searchParams = useSearchParams()
   const plan = searchParams.get('plan') || 'Pro'
-  const [cycle, setCycle] = useState<Cycle>('yearly')
+  const [cycle, setCycle] = useState<Cycle>('quarterly')
   const [userMenuOpen, setUserMenuOpen] = useState(false)
+  const trialDays = 3
 
   const selected = useMemo(() => CYCLE_OPTIONS[cycle], [cycle])
+  const firstChargeDate = useMemo(() => {
+    const date = new Date()
+    date.setDate(date.getDate() + trialDays)
+    return new Intl.DateTimeFormat('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    }).format(date)
+  }, [trialDays])
   const userInitial = useMemo(() => USER_NAME.trim().charAt(0).toUpperCase() || 'U', [])
   const avatarTone = useMemo(() => {
     const idx = userInitial.charCodeAt(0) % AVATAR_TONES.length
@@ -99,6 +111,13 @@ export default function UpgradePage() {
               </p>
             </header>
 
+            <div className="sub-upgrade-trial-card">
+              <p className="sub-upgrade-trial-title">3-days free trial</p>
+              <p className="sub-upgrade-trial-desc">
+                You will not be charged during the first 3 days. Your first payment is on {firstChargeDate}.
+              </p>
+            </div>
+
             <div className="sub-cycle-list">
               {(Object.keys(CYCLE_OPTIONS) as Cycle[]).map((key) => {
                 const item = CYCLE_OPTIONS[key]
@@ -126,7 +145,7 @@ export default function UpgradePage() {
                       <div className="sub-cycle-price">
                         <strong>${item.perMonth}</strong>
                         <span className="sub-cycle-price-unit">USD</span>
-                        <span className="sub-cycle-price-period">/ month</span>
+                        <span className="sub-cycle-price-period">{CYCLE_PRICE_PERIOD_LABEL[key]}</span>
                       </div>
                       {item.total !== item.perMonth ? (
                         <p className="sub-cycle-note">
@@ -166,10 +185,13 @@ export default function UpgradePage() {
                   <span className="sub-upgrade-cycle-save"> ({selected.save})</span>
                 ) : null}
               </p>
+              <p className="sub-upgrade-first-charge">
+                First charge on {firstChargeDate}: <strong>${selected.total} USD</strong>
+              </p>
             </div>
             <div className="sub-upgrade-total">
-              <span>Total for today</span>
-              <strong>${selected.total}<span className="sub-upgrade-total-unit"> USD</span></strong>
+              <span>Due today</span>
+              <strong>$0<span className="sub-upgrade-total-unit"> USD</span></strong>
             </div>
             <p className="sub-upgrade-tax">Taxes calculated at next step if applicable.</p>
           </aside>

@@ -22,7 +22,7 @@ const plans: Plan[] = [
     desc: 'For basic features to kickstart your job search efficiency',
     badge: 'Save 38%',
     price:    { monthly: '$9.99',  quarterly: '$6.99' },
-    original: { monthly: '$10.00/monthly', quarterly: '$9.99/monthly' },
+    original: { monthly: '', quarterly: '$9.99/monthly' },
     billing:  { monthly: '', quarterly: 'BILLED QUARTERLY, $20.99' },
     cta: 'dark',
     features: ['50 Auto Apply per month', '10 Resume Credits'],
@@ -32,7 +32,7 @@ const plans: Plan[] = [
     desc: 'Unlock advanced AI capacities, maximize your job hunting success',
     popular: true,
     price:    { monthly: '$25.99', quarterly: '$15.99' },
-    original: { monthly: '$25.99/monthly', quarterly: '$25.99/monthly' },
+    original: { monthly: '', quarterly: '$25.99/monthly' },
     billing:  { monthly: '', quarterly: 'BILLED QUARTERLY, $47.99' },
     cta: 'primary',
     features: ['150 Auto Apply per month', '50 Resume Credits'],
@@ -42,7 +42,7 @@ const plans: Plan[] = [
     desc: 'Unlock advanced AI capacities, maximize your job hunting success',
     badge: 'Save 50%',
     price:    { monthly: '$59.99', quarterly: '$29.99' },
-    original: { monthly: '$59.99/monthly', quarterly: '$59.99/monthly' },
+    original: { monthly: '', quarterly: '$59.99/monthly' },
     billing:  { monthly: '', quarterly: 'BILLED QUARTERLY, $89.99' },
     cta: 'dark',
     features: ['300 Auto Apply per month', '150 Resume Credits'],
@@ -53,6 +53,7 @@ const checkSrc = '/img/Check.svg'
 
 export default function Pricing() {
   const [billing, setBilling] = useState<Billing>('monthly')
+  const amountPeriodLabel = billing === 'monthly' ? '/Month' : '/quarter'
 
   return (
     <section className="pricing" id="pricing">
@@ -65,6 +66,9 @@ export default function Pricing() {
             <span className="text-accent-underline">Perfect</span>{' '}
             for you
           </h2>
+          <p className="pricing-trial-note">
+            Start with <span className="pricing-trial-pill">3-days free trial</span>
+          </p>
         </div>
 
         <div className="pricing-toggle">
@@ -99,9 +103,14 @@ export default function Pricing() {
               <p className="plan-desc">{plan.desc}</p>
 
               <div className="plan-price">
-                <span className="plan-amount">{plan.price[billing]}</span>
+                <span className="plan-amount">
+                  {plan.price[billing]}
+                  <span className="plan-amount-period">{amountPeriodLabel}</span>
+                </span>
                 <div className="plan-price-meta">
-                  <span className="plan-original">{plan.original[billing]}</span>
+                  <span className={`plan-original${plan.original[billing] ? '' : ' is-empty'}`}>
+                    {plan.original[billing] || '\u00A0'}
+                  </span>
                   <span className={`plan-billing${plan.billing[billing] ? '' : ' is-empty'}`}>
                     {plan.billing[billing] || '\u00A0'}
                   </span>

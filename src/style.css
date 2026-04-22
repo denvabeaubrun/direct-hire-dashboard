@@ -883,6 +883,24 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 /* Center toggle within section */
 .pricing .container { text-align: center; }
 .pricing .section-header--center + .pricing-toggle { /* already centered */ }
+.pricing-trial-note {
+  margin-top: var(--space-4);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-text-second);
+}
+.pricing-trial-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 11px;
+  margin-left: 6px;
+  border-radius: var(--radius-full);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text-green-dark);
+  background: var(--color-main-tint-sm);
+  line-height: 1;
+}
 
 .pricing-grid {
   display: grid;
@@ -982,6 +1000,15 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   letter-spacing: 0;
   color: var(--color-text-default);
   line-height: 40px;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+}
+.plan-amount-period {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-second-2);
+  line-height: 1;
 }
 .plan-original {
   display: block;
@@ -989,6 +1016,9 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   color: var(--color-text-second-2);
   text-decoration: line-through;
   line-height: 16px;
+}
+.plan-original.is-empty {
+  visibility: hidden;
 }
 .plan-billing {
   display: block;
@@ -3935,6 +3965,42 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   color: var(--color-text-default);
   font-weight: 600;
 }
+.sub-menu-label-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.sub-menu-trial-pill {
+  display: inline-flex;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-text-green-dark);
+  background: var(--color-main-tint-sm);
+  border-radius: 999px;
+  padding: 3px 8px;
+  white-space: nowrap;
+}
+.sub-trial-note {
+  margin-top: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--color-text-second);
+}
+.sub-trial-pill {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 6px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-text-green-dark);
+  background: var(--color-main-tint-sm);
+  white-space: nowrap;
+}
 .sub-profile-toggle {
   width: 100%;
   border: 0;
@@ -4142,8 +4208,8 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 .sub-cycle-row.is-active {
   border-color: var(--color-text-default);
-  background: var(--color-bg-light);
-  box-shadow: 0 0 0 3px var(--color-main-tint-sm);
+  background: var(--color-surface-muted);
+  box-shadow: 0 0 0 3px var(--color-overlay-03);
 }
 .sub-cycle-row.has-badge {
   margin-top: 8px;
@@ -4300,6 +4366,27 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   transform: translateX(2px);
 }
 
+.sub-upgrade-trial-card {
+  margin: 0 0 14px;
+  border: 1px solid var(--color-main-tint-md);
+  background: var(--color-main-tint-sm);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+.sub-upgrade-trial-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text-green-dark);
+  line-height: 1.2;
+}
+.sub-upgrade-trial-desc {
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-second);
+  line-height: 1.5;
+}
+
 /* 底部法律/说明文字 */
 .sub-upgrade-legal {
   margin-top: 14px;
@@ -4402,6 +4489,17 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   font-weight: 700;
   color: var(--color-text-second);
   margin-left: 4px;
+}
+.sub-upgrade-first-charge {
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-second);
+  line-height: 1.5;
+}
+.sub-upgrade-first-charge strong {
+  color: var(--color-text-default);
+  font-weight: 700;
 }
 .sub-upgrade-tax {
   margin-top: 10px;
